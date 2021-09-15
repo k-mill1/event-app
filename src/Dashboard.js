@@ -4,17 +4,18 @@ import Add from "./Add";
 function Dashboard(props) {
   const [events, cEvents] = useState([]);
   const [current, cCurrent] = useState(undefined);
+  const [location, cLocation] = useState(undefined)
 
   const refreshList = () => {
     props.client.getEvents().then((response) => cEvents(response.data));
   };
 
   const removeEvent = (id) => {
-    props.client.removeEvent(id).then(() => refreshList());
+    props.client.removeEvent(id).then(() => location ? getByLocation(location) : refreshList());
   };
 
-  const getByLocation = (location) => {
-    props.client.getByLocation(location).then((response) => cEvents(response.data))
+  const getByLocation = (loc) => {
+    props.client.getByLocation(loc).then((response) => cEvents(response.data));
   };
 
   const updateEvent = (ev) => {
@@ -41,15 +42,24 @@ function Dashboard(props) {
       );
     });
   };
-  const submitHandler = (e) => {
+
+  const submitLocationHandler = (e) => {
     e.preventDefault();
     getByLocation(e.target.location.value)
+    cLocation(e.target.location.value)
+  };
+
+  const onClickFunction = () => {
+    document.getElementById("addSearchForm").reset()
+    refreshList()
+    cLocation(undefined)
   };
   return (
     <>
       Dashboard
       <br />
-      <form onSubmit={(e) => submitHandler(e)} id="addSearchForm">
+     
+      <form onSubmit={(e) => submitLocationHandler(e)} id="addSearchForm">
         Search by location: <br />
         <input
         type="text"
@@ -61,7 +71,12 @@ function Dashboard(props) {
         Search{" "}
         </button>
       </form>
-
+      
+      <button onClick = {() => onClickFunction()} >
+        {" "}
+        Show All{" "}
+      </button> 
+   
       <table>
         <thead>
           <tr>
@@ -82,6 +97,8 @@ function Dashboard(props) {
           cCurrent(undefined);
         }}
         currentEvent={current}
+        currentLocation={location}
+        getByLocation={(loc) => getByLocation(loc)}
       />
       <br />
       <button onClick={() => props.client.logoutHandler()}> log out</button>
