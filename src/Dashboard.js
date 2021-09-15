@@ -5,17 +5,22 @@ function Dashboard(props) {
   const [events, cEvents] = useState([]);
   const [current, cCurrent] = useState(undefined);
   const [location, cLocation] = useState(undefined)
+  const [name, cName] = useState(undefined)
 
   const refreshList = () => {
     props.client.getEvents().then((response) => cEvents(response.data));
   };
 
   const removeEvent = (id) => {
-    props.client.removeEvent(id).then(() => location ? getByLocation(location) : refreshList());
+    props.client.removeEvent(id).then(() => !location && !name ? refreshList() : location ? getByLocation(location) : getByName(name));
   };
 
   const getByLocation = (loc) => {
     props.client.getByLocation(loc).then((response) => cEvents(response.data));
+  };
+
+  const getByName = (nam) => {
+    props.client.getByName(nam).then((response) => cEvents(response.data));
   };
 
   const updateEvent = (ev) => {
@@ -47,23 +52,48 @@ function Dashboard(props) {
     e.preventDefault();
     getByLocation(e.target.location.value)
     cLocation(e.target.location.value)
+    cName(undefined)
+    document.getElementById("addNameSearchForm").reset()
+  };
+
+  const submitNameHandler = (e) => {
+    e.preventDefault();
+    getByName(e.target.name.value)
+    cName(e.target.name.value)
+    cLocation(undefined)
+    document.getElementById("addLocationSearchForm").reset()
   };
 
   const onClickFunction = () => {
-    document.getElementById("addSearchForm").reset()
+    document.getElementById("addLocationSearchForm").reset()
+    document.getElementById("addNameSearchForm").reset()
     refreshList()
     cLocation(undefined)
+    cName(undefined)
   };
   return (
     <>
       Dashboard
       <br />
      
-      <form onSubmit={(e) => submitLocationHandler(e)} id="addSearchForm">
+      <form onSubmit={(e) => submitLocationHandler(e)} id="addLocationSearchForm">
         Search by location: <br />
         <input
         type="text"
         name="location"
+        />
+        <br />
+        <button type="submit">
+        {" "}
+        Search{" "}
+        </button>
+      </form>
+
+      <form onSubmit={(e) => submitNameHandler(e)} id="addNameSearchForm">
+        Search by name: <br />
+        <input
+        type="text"
+        name="name"
         />
         <br />
         <button type="submit">
@@ -98,7 +128,9 @@ function Dashboard(props) {
         }}
         currentEvent={current}
         currentLocation={location}
+        currentName={name}
         getByLocation={(loc) => getByLocation(loc)}
+        getByName={(nam) => getByName(nam)}
       />
       <br />
       <button onClick={() => props.client.logoutHandler()}> log out</button>

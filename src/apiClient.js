@@ -33,6 +33,10 @@ export class ApiClient {
     return this.apiCall("get", `${url}${location}`) ;
   }
 
+  getByName(name) {
+    return this.apiCall("get", `${url}name/${name}`) ;
+  }
+
   addEvent(name, location, information, date) {
     return this.apiCall("post", url, { name, location, information, date });
   }

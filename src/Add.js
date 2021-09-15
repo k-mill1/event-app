@@ -27,10 +27,12 @@ function Add(props) {
         setStartDate(new Date())
         document.getElementById("addForm").reset();
 
-        if(!props.currentLocation) {
+        if(!props.currentLocation && !props.currentName) {
           props.refreshList()
-        } else {
+        } if (props.currentLocation) {
           props.getByLocation(props.currentLocation)
+        } else {
+          props.getByName(props.currentName)
         };
       })
       .catch(() => {
@@ -39,12 +41,11 @@ function Add(props) {
       });
   };
 
-  
   return (
     <>
       {props.currentEvent ? "Update" : "Add"}
       <br />
-     
+  
       <form onSubmit={(e) => submitHandler(e)} id="addForm">
         Name: <br />
         <input
