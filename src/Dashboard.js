@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Add from "./Add";
+import Searchbar from "./searchBar";
 
 function Dashboard(props) {
   const [events, cEvents] = useState([]);
@@ -47,73 +48,30 @@ function Dashboard(props) {
       );
     });
   };
-
-  const submitLocationHandler = (e) => {
-    e.preventDefault();
-    getByLocation(e.target.location.value)
-    cLocation(e.target.location.value)
-    cName(undefined)
-    document.getElementById("addNameSearchForm").reset()
-  };
-
-  const submitNameHandler = (e) => {
-    e.preventDefault();
-    getByName(e.target.name.value)
-    cName(e.target.name.value)
-    cLocation(undefined)
-    document.getElementById("addLocationSearchForm").reset()
-  };
-
-  const onClickFunction = () => {
-    document.getElementById("addLocationSearchForm").reset()
-    document.getElementById("addNameSearchForm").reset()
-    refreshList()
-    cLocation(undefined)
-    cName(undefined)
-  };
+  
   return (
     <>
       Dashboard
       <br />
-     
-      <form onSubmit={(e) => submitLocationHandler(e)} id="addLocationSearchForm">
-        Search by location: <br />
-        <input
-        type="text"
-        name="location"
-        />
-        <br />
-        <button type="submit">
-        {" "}
-        Search{" "}
-        </button>
-      </form>
-
-      <form onSubmit={(e) => submitNameHandler(e)} id="addNameSearchForm">
-        Search by name: <br />
-        <input
-        type="text"
-        name="name"
-        />
-        <br />
-        <button type="submit">
-        {" "}
-        Search{" "}
-        </button>
-      </form>
-      
-      <button onClick = {() => onClickFunction()} >
-        {" "}
-        Show All{" "}
-      </button> 
+     <Searchbar 
+        refreshList={() => {
+          refreshList();
+          cCurrent(undefined);
+        }}
+        cName={cName}
+        cLocation={cLocation}
+        getByLocation={(loc) => getByLocation(loc)}
+        getByName={(nam) => getByName(nam)}
+     />
    
       <table>
         <thead>
           <tr>
-            <th>Event Name</th>
+            <th>Name</th>
             <th>Location</th>
-            <th>Information</th>
+            <th>Description</th>
             <th>Date/time</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>{buildrows()}</tbody>
