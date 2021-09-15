@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Card from "react-bootstrap/Card";
+import Form from "react-bootstrap/Form";
+import "bootstrap/dist/css/bootstrap.min.css"
+import './App.css';
 
 function Add(props) {
   const [disabled, cDisabled] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
-    // console.log(startDate)
+
   const submitHandler = (e) => {
     e.preventDefault();
     cDisabled(true);
@@ -43,39 +47,46 @@ function Add(props) {
  
   return (
     <>
-      {props.currentEvent ? "Update" : "Add"}
-      <br />
-     
+    <Card className = "add-card">
+      <Card.Header className = 'small-card-header'>{props.currentEvent ? "Update event" : "Add event"}</Card.Header>
+     <Card.Body>
       <form onSubmit={(e) => submitHandler(e)} id="addForm">
-        Name: <br />
+        Name:
         <input
+          className = "add-field"
           type="text"
           defaultValue={props.currentEvent?.name}
           name="eventName"
           disabled={disabled}
+          autocomplete="off"
         />
         <br />
         Location:
         <br />
         <input
+          className = "add-field"
           type="text"
           defaultValue={props.currentEvent?.location}
           name="location"
           disabled={disabled}
+          autocomplete="off"
         />
         <br />
-        Information:
+        Description:
         <br />
         <input
+          className = "add-field"
           type="text"
           defaultValue={props.currentEvent?.information}
           name="information"
           disabled={disabled}
+          autocomplete="off"
         />
         <br />
-        Date:
+        Date/Time:
         <br />
         <DatePicker
+            className = "add-field"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             showTimeSelect
@@ -87,12 +98,14 @@ function Add(props) {
             name = "date"
         />
         <br />
-        <br />
-        <button type="submit" disabled={disabled}>
+        
+        <button className ="button-26" type="submit" disabled={disabled}>
           {" "}
           Submit{" "}
         </button>
       </form>
+      </Card.Body>
+      </Card>
     </>
   );
 }

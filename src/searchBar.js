@@ -1,3 +1,9 @@
+import './App.css';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Row';
+import Button from "react-bootstrap/Button";
+import "bootstrap/dist/css/bootstrap.min.css"
+
 function Searchbar(props) {
 
     const resetName = () => {
@@ -32,36 +38,28 @@ function Searchbar(props) {
 
     return (
         <>
-        <form onSubmit={(e) => submitLocationHandler(e)} id="addLocationSearchForm">
-            Search by location: <br />
-            <input
-            type="text"
-            name="location"
-            />
-            <br />
-            <button type="submit">
-            {" "}
-            Search{" "}
-            </button>
+        <Col xs = {7}>
+            <form onSubmit={(e) => submitLocationHandler(e)} id="addLocationSearchForm">
+                <input className = "search-field" type="text" name="location" placeholder="Search by location" autocomplete="off"/>
+                <button className = "search-button button-26" type="submit">
+                    {" "}
+                    Search{" "}
+                </button>
             </form>
-
             <form onSubmit={(e) => submitNameHandler(e)} id="addNameSearchForm">
-            Search by name: <br />
-            <input
-            type="text"
-            name="name"
-            />
-            <br />
-            <button type="submit">
-            {" "}
-            Search{" "}
+                <input className = "search-field" type="text" name="name" placeholder="Search by name" autocomplete="off" />
+                <button className="search-button button-26" type="submit">
+                    {" "}
+                    Search{" "}
+                </button>
+            </form>
+                
+            <button className="show-button button-26" onClick = {() => onClickFunction()} >
+                {" "}
+                Show All{" "}
             </button>
-        </form>
-            
-        <button onClick = {() => onClickFunction()} >
-            {" "}
-            Show All{" "}
-        </button> 
+        </Col>
+        
         </>
     ) 
 }

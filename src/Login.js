@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import './App.css';
+import Card from 'react-bootstrap/Card';
 
 function Login(props) {
   const [disabled, cDisabled] = useState(false);
@@ -19,23 +21,29 @@ function Login(props) {
 
   return (
     <>
-      Login
-      <br />
+    <div className="d-flex justify-content-center">
+    <Card className = "login-card" style={{maxWidth: '30rem'}}>
+      <Card.Header className="login-header">Sign In</Card.Header>
+      <Card.Body>
       <form onSubmit={(e) => submitHandler(e)}>
-        username
+      
         <br />
-        <input type="text" name="username" disabled={disabled} />
+        <input className = "login-field" type="text" name="username" placeholder="Username" disabled={disabled} autocomplete="off"/>
         <br />
-        password
-        <br />
-        <input type="password" name="password" disabled={disabled} />
+        <input className = "login-field" type="password" name="password" placeholder="Password" disabled={disabled} autocomplete="off" />
         <br />
         <br />
-        <button type="submit" disabled={disabled}>
-          {" "}
-          Submit{" "}
-        </button>
+        <div className = "login-button">
+          <button className = "button-62" type="submit" disabled={disabled}>
+            {" "}
+            Sign In{" "}
+          </button>
+        </div>
+        <br />
       </form>
+      </Card.Body>
+    </Card>
+    </div>
     </>
   );
 }

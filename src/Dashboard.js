@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Add from "./Add";
 import Searchbar from "./searchBar";
+import Card from 'react-bootstrap/Card';
+import './App.css';
+import Table from "react-bootstrap/Table";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import "bootstrap/dist/css/bootstrap.min.css"
 
 function Dashboard(props) {
   const [events, cEvents] = useState([]);
@@ -41,8 +49,8 @@ function Dashboard(props) {
           <td>{current.information}</td>
           <td>{current.date}</td>
           <td>
-            <button onClick={() => removeEvent(current._id)}> remove</button>
-            <button onClick={() => updateEvent(current)}> update</button>
+            <button className ="button-28" onClick={() => removeEvent(current._id)}> Remove</button>{' '}
+            <button className ="button-27" onClick={() => updateEvent(current)}> Update</button>
           </td>
         </tr>
       );
@@ -51,47 +59,62 @@ function Dashboard(props) {
   
   return (
     <>
-      Dashboard
-      <br />
-     <Searchbar 
-        refreshList={() => {
-          refreshList();
-          cCurrent(undefined);
-        }}
-        cName={cName}
-        cLocation={cLocation}
-        getByLocation={(loc) => getByLocation(loc)}
-        getByName={(nam) => getByName(nam)}
-     />
-   
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Description</th>
-            <th>Date/time</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>{buildrows()}</tbody>
-      </table>
-      <br />
-      <br />
-      <Add
-        client={props.client}
-        refreshList={() => {
-          refreshList();
-          cCurrent(undefined);
-        }}
-        currentEvent={current}
-        currentLocation={location}
-        currentName={name}
-        getByLocation={(loc) => getByLocation(loc)}
-        getByName={(nam) => getByName(nam)}
-      />
-      <br />
-      <button onClick={() => props.client.logoutHandler()}> log out</button>
+    <Container fluid="xs">
+      <Card>
+        <Card.Header className = "large-header">Dashboard</Card.Header>
+        <Card.Body >
+          <Row>
+            <Searchbar 
+              refreshList={() => {
+                refreshList();
+                cCurrent(undefined);
+              }}
+              cName={cName}
+              cLocation={cLocation}
+              getByLocation={(loc) => getByLocation(loc)}
+              getByName={(nam) => getByName(nam)}
+            />
+          </Row>
+          <br />
+            <Row>
+              <Col xs = {7}>
+              <Card className = 'event-card'>
+                <Card.Header className = 'small-card-header' >Events</Card.Header>
+                <Card.Body>
+                  <Table className = 'event-table'>
+                  <thead  >
+                    <tr>
+                      <th>Name</th>
+                      <th>Location</th>
+                      <th>Description</th>
+                      <th>Date/Time</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>{buildrows()}</tbody>
+                </Table>
+                </Card.Body>
+              </Card>
+              </Col>
+              <Col>
+              <Add 
+                client={props.client}
+                refreshList={() => {
+                  refreshList();
+                  cCurrent(undefined);
+                }}
+                currentEvent={current}
+                currentLocation={location}
+                currentName={name}
+                getByLocation={(loc) => getByLocation(loc)}
+                getByName={(nam) => getByName(nam)}
+              />
+              </Col>
+            </Row>
+            <button className = "button-62 log-out-button" onClick={() => props.client.logoutHandler()}> Log out</button>
+          </Card.Body>
+        </Card>
+      </Container> 
     </>
   );
 }
