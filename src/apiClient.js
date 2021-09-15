@@ -29,16 +29,20 @@ export class ApiClient {
     return this.apiCall("get", url);
   }
 
-  addEvent(name, location, information, date, time) {
-    return this.apiCall("post", url, { name, location, information, date, time });
+  getByLocation(location) {
+    return this.apiCall("get", `${url}${location}`) ;
+  }
+
+  addEvent(name, location, information, date) {
+    return this.apiCall("post", url, { name, location, information, date });
   }
 
   removeEvent(id) {
     return this.apiCall("delete", `${url}${id}`);
   }
 
-  updateEvent(id, name, location, information, date, time) {
-    return this.apiCall("put", `${url}${id}`, { name, location, information, date, time });
+  updateEvent(id, name, location, information, date) {
+    return this.apiCall("put", `${url}${id}`, { name, location, information, date }) ;
   }
 
   async login(username, password) {

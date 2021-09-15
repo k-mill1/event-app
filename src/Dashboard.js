@@ -13,6 +13,10 @@ function Dashboard(props) {
     props.client.removeEvent(id).then(() => refreshList());
   };
 
+  const getByLocation = (location) => {
+    props.client.getByLocation(location).then((response) => cEvents(response.data))
+  };
+
   const updateEvent = (ev) => {
     cCurrent(ev);
   };
@@ -29,7 +33,6 @@ function Dashboard(props) {
           <td>{current.location}</td>
           <td>{current.information}</td>
           <td>{current.date}</td>
-          <td>{current.time}</td>
           <td>
             <button onClick={() => removeEvent(current._id)}> remove</button>
             <button onClick={() => updateEvent(current)}> update</button>
@@ -38,19 +41,34 @@ function Dashboard(props) {
       );
     });
   };
-
+  const submitHandler = (e) => {
+    e.preventDefault();
+    getByLocation(e.target.location.value)
+  };
   return (
     <>
       Dashboard
       <br />
+      <form onSubmit={(e) => submitHandler(e)} id="addSearchForm">
+        Search by location: <br />
+        <input
+        type="text"
+        name="location"
+        />
+        <br />
+        <button type="submit">
+        {" "}
+        Search{" "}
+        </button>
+      </form>
+
       <table>
         <thead>
           <tr>
             <th>Event Name</th>
             <th>Location</th>
             <th>Information</th>
-            <th>Date</th>
-            <th>Time</th>
+            <th>Date/time</th>
           </tr>
         </thead>
         <tbody>{buildrows()}</tbody>
@@ -65,6 +83,8 @@ function Dashboard(props) {
         }}
         currentEvent={current}
       />
+      <br />
+      <button onClick={() => props.client.logoutHandler()}> log out</button>
     </>
   );
 }

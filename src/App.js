@@ -12,7 +12,6 @@ function App() {
   );
 
   const login = (t) => {
-    console.log(t)
     window.localStorage.setItem('token', t)
     changeToken(t)
   }

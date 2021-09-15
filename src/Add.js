@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Add(props) {
   const [disabled, cDisabled] = useState(false);
-
+  const [startDate, setStartDate] = useState(new Date());
+    // console.log(startDate)
   const submitHandler = (e) => {
     e.preventDefault();
     cDisabled(true);
@@ -13,15 +16,15 @@ function Add(props) {
         e.target.eventName.value,
         e.target.location.value,
         e.target.information.value,
-        e.target.date.value,
-        e.target.time.value
+        e.target.date.value
       );
     } else {
-      result = props.client.addEvent(e.target.eventName.value, e.target.location.value, e.target.information.value, e.target.date.value, e.target.time.value);
+      result = props.client.addEvent(e.target.eventName.value, e.target.location.value, e.target.information.value, e.target.date.value);
     }
     result
       .then(() => {
         cDisabled(false);
+        setStartDate(new Date())
         document.getElementById("addForm").reset();
         props.refreshList();
       })
@@ -33,7 +36,7 @@ function Add(props) {
 
   return (
     <>
-      {props.currentAd ? "Update" : "Add"}
+      {props.currentEvent ? "Update" : "Add"}
       <br />
 
       <form onSubmit={(e) => submitHandler(e)} id="addForm">
@@ -65,20 +68,16 @@ function Add(props) {
         <br />
         Date:
         <br />
-        <input
-          type="text"
-          defaultValue={props.currentEvent?.date}
-          name="date"
-          disabled={disabled}
-        />
-        <br />
-        Time:
-        <br />
-        <input
-          type="text"
-          defaultValue={props.currentEvent?.time}
-          name="time"
-          disabled={disabled}
+        <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={30}
+            timeCaption="time"
+            dateFormat="MMMM d, yyyy h:mm aa"
+            disabled={disabled}
+            name = "date"
         />
         <br />
         <br />
