@@ -27,9 +27,9 @@ function Add(props) {
         setStartDate(new Date())
         document.getElementById("addForm").reset();
 
-        if(!props.currentLocation && !props.currentName) {
+        if(!props.currentName && !props.currentLocation) {
           props.refreshList()
-        } if (props.currentLocation) {
+        } else if (props.currentLocation) {
           props.getByLocation(props.currentLocation)
         } else {
           props.getByName(props.currentName)
@@ -40,12 +40,12 @@ function Add(props) {
         cDisabled(false);
       });
   };
-
+ 
   return (
     <>
       {props.currentEvent ? "Update" : "Add"}
       <br />
-  
+     
       <form onSubmit={(e) => submitHandler(e)} id="addForm">
         Name: <br />
         <input
