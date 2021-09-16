@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import Card from "react-bootstrap/Card";
-import "bootstrap/dist/css/bootstrap.min.css"
+import React, { useState, useEffect } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import Card from 'react-bootstrap/Card';
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css';
 
 function Add(props) {
@@ -29,18 +29,20 @@ function Add(props) {
       .then(() => {
         cDisabled(false);
         setStartDate(new Date())
-        document.getElementById("addForm").reset();
+        document.getElementById('addForm').reset();
 
-        if(!props.currentName && !props.currentLocation) {
+        if (!props.currentName && !props.currentLocation) {
           props.refreshList()
         } else if (props.currentLocation) {
           props.getByLocation(props.currentLocation)
+          props.cCurrentEvent(undefined)
         } else {
           props.getByName(props.currentName)
+          props.cCurrentEvent(undefined)
         };
       })
       .catch(() => {
-        alert("an error occured, please try again");
+        alert('an error occured, please try again');
         cDisabled(false);
       });
   };
@@ -53,77 +55,76 @@ function Add(props) {
   // cancel event update
  const cancelUpdate = () => {
   props.cCurrentEvent(undefined)
-  document.getElementById("addForm").reset()
+  document.getElementById('addForm').reset()
  }
 
  // show cancel button
  const showCancelButton = () => {
    return (
-      <button className ="button-28" type="button" onClick={() => cancelUpdate()}>
-        {" "}
-        Cancel{" "}
+      <button className = 'button-28' type = 'button' onClick={() => cancelUpdate()}>
+        {' '}
+        Cancel{' '}
       </button>)
  }
 
   return (
     <>
-    <Card className = "add-card">
-      <Card.Header className = 'small-card-header'>{props.currentEvent ? "Update event" : "Add event"}</Card.Header>
+    <Card className = 'add-card'>
+      <Card.Header className = 'small-card-header'>{props.currentEvent ? 'Update event' : 'Add event'}</Card.Header>
       <Card.Body>
-        <form onSubmit={(e) => submitHandler(e)} id="addForm">
+        <form onSubmit={(e) => submitHandler(e)} id='addForm'>
           Name:
           <input
-              className = "add-field"
-              type="text"
-              defaultValue={props.currentEvent?.name}
-              name="eventName"
-              disabled={disabled}
-              autoComplete="off"
+              className = 'add-field'
+              type = 'text'
+              defaultValue = {props.currentEvent?.name}
+              name = 'eventName'
+              disabled = {disabled}
+              autoComplete = 'off'
           />
           <br />
           Location:
           <br />
           <input
-              className = "add-field"
-              type="text"
-              defaultValue={props.currentEvent?.location}
-              name="location"
-              disabled={disabled}
-              autoComplete="off"
+              className = 'add-field'
+              type = 'text'
+              defaultValue = {props.currentEvent?.location}
+              name = 'location'
+              disabled = {disabled}
+              autoComplete = 'off'
           />
           <br />
           Description:
           <br />
           <input
-              className = "add-field"
-              type="text"
-              defaultValue={props.currentEvent?.information}
-              name="information"
-              disabled={disabled}
-              autoComplete="off"
+              className = 'add-field'
+              type = 'text'
+              defaultValue = {props.currentEvent?.information}
+              name = 'information'
+              disabled = {disabled}
+              autoComplete = 'off'
           />
           <br />
           Date/Time:
           <br />
           <DatePicker
-              className = "add-field"
-              selected={props.currentEvent ? formDate : startDate}
-              onChange={(e) => props.currentEvent ? setFormDate(e) : setStartDate(e)}
+              className = 'add-field'
+              selected = {props.currentEvent ? formDate : startDate}
+              onChange = {(e) => props.currentEvent ? setFormDate(e) : setStartDate(e)}
               showTimeSelect
-              timeFormat="HH:mm"
-              timeIntervals={30}
-              timeCaption="time"
-              dateFormat="MMMM d yyyy h:mm aa"
-              disabled={disabled}
-              name = "date"
+              timeFormat = 'HH:mm'
+              timeIntervals = {30}
+              timeCaption = 'time'
+              dateFormat = 'MMMM d yyyy h:mm aa'
+              disabled = {disabled}
+              name = 'date'
           />
           <br />
-          <button className ="button-26" type="submit" disabled={disabled}>
-              {" "}
-              Submit{" "}
+          <button className = 'button-26' type = 'submit' disabled = {disabled}>
+              {' '}
+              Submit{' '}
           </button>
-          {props.currentEvent ? showCancelButton() : null} 
-
+          {props.currentEvent ? showCancelButton() : null}
         </form>
       </Card.Body>
     </Card>
