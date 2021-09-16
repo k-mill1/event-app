@@ -6,7 +6,6 @@ import './App.css';
 import Table from "react-bootstrap/Table";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css"
 
@@ -77,11 +76,11 @@ function Dashboard(props) {
           </Row>
           <br />
             <Row>
-              <Col xs = {7}>
+              <Col md = {7}>
               <Card className = 'event-card'>
                 <Card.Header className = 'small-card-header' >Events</Card.Header>
                 <Card.Body>
-                  <Table className = 'event-table'>
+                  <Table responsive className = 'event-table'>
                   <thead  >
                     <tr>
                       <th>Name</th>
@@ -104,6 +103,7 @@ function Dashboard(props) {
                   cCurrent(undefined);
                 }}
                 currentEvent={current}
+                cCurrentEvent={cCurrent}
                 currentLocation={location}
                 currentName={name}
                 getByLocation={(loc) => getByLocation(loc)}

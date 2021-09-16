@@ -28,9 +28,9 @@ function Login(props) {
       <form onSubmit={(e) => submitHandler(e)}>
       
         <br />
-        <input className = "login-field" type="text" name="username" placeholder="Username" disabled={disabled} autocomplete="off"/>
+        <input className = "login-field" type="text" name="username" placeholder="Username" disabled={disabled} autoComplete="off"/>
         <br />
-        <input className = "login-field" type="password" name="password" placeholder="Password" disabled={disabled} autocomplete="off" />
+        <input className = "login-field" type="password" name="password" placeholder="Password" disabled={disabled} autoComplete="off" />
         <br />
         <br />
         <div className = "login-button">

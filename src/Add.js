@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css"
 import './App.css';
 
 function Add(props) {
   const [disabled, cDisabled] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
+  console.log(props.currentEvent)
+  const [formDate, setFormDate] = useState(props.currentEvent?.date ? new Date(props.currentEvent.date) : new Date())
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -44,6 +45,22 @@ function Add(props) {
         cDisabled(false);
       });
   };
+
+  // 
+  const handleDateChange = (e) => {
+    if(props.currentEvent){
+      setFormDate(e)
+    }
+    else{
+      setStartDate(e)
+    }
+  }
+
+  // when we select an event to update
+  useEffect(() => {
+    setFormDate(props.currentEvent?.date ? new Date(props.currentEvent.date) : new Date())
+  }, [props.currentEvent])
+
  
   return (
     <>
@@ -58,7 +75,7 @@ function Add(props) {
           defaultValue={props.currentEvent?.name}
           name="eventName"
           disabled={disabled}
-          autocomplete="off"
+          autoComplete="off"
         />
         <br />
         Location:
@@ -69,7 +86,7 @@ function Add(props) {
           defaultValue={props.currentEvent?.location}
           name="location"
           disabled={disabled}
-          autocomplete="off"
+          autoComplete="off"
         />
         <br />
         Description:
@@ -80,20 +97,20 @@ function Add(props) {
           defaultValue={props.currentEvent?.information}
           name="information"
           disabled={disabled}
-          autocomplete="off"
+          autoComplete="off"
         />
         <br />
         Date/Time:
         <br />
         <DatePicker
             className = "add-field"
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            selected={props.currentEvent ? formDate : startDate}
+            onChange={(e) => handleDateChange(e)}
             showTimeSelect
             timeFormat="HH:mm"
             timeIntervals={30}
             timeCaption="time"
-            dateFormat="MMMM d, yyyy h:mm aa"
+            dateFormat="MMMM d yyyy h:mm aa"
             disabled={disabled}
             name = "date"
         />
@@ -103,6 +120,11 @@ function Add(props) {
           {" "}
           Submit{" "}
         </button>
+
+        {/* <button className ="button-28" >
+          {" "}
+          Cancel{" "}
+        </button> */}
       </form>
       </Card.Body>
       </Card>
