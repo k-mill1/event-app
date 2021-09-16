@@ -38,14 +38,25 @@ function Searchbar(props) {
         <>
         <Col xs = {7}>
             <form onSubmit={(e) => submitLocationHandler(e)} id="addLocationSearchForm">
-                <input className = "search-field" type="text" name="location" placeholder="Search by location" autoComplete="off"/>
+                <input 
+                  className = "search-field" 
+                  type="text" 
+                  name="location" 
+                  placeholder="Search by location" 
+                  autoComplete="off"
+                />
                 <button className = "search-button button-26" type="submit">
                     {" "}
                     Search{" "}
                 </button>
             </form>
             <form onSubmit={(e) => submitNameHandler(e)} id="addNameSearchForm">
-                <input className = "search-field" type="text" name="name" placeholder="Search by name" autoComplete="off" />
+                <input 
+                  className = "search-field" 
+                  type="text" name="name" 
+                  placeholder="Search by name" 
+                  autoComplete="off" 
+                 />
                 <button className="search-button button-26" type="submit">
                     {" "}
                     Search{" "}
@@ -57,7 +68,6 @@ function Searchbar(props) {
                 Show All{" "}
             </button>
         </Col>
-        
         </>
     ) 
 }

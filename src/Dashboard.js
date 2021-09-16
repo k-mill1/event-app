@@ -7,13 +7,18 @@ import Table from "react-bootstrap/Table";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
-import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap/dist/css/bootstrap.min.css";
+import sortBy from "lodash/sortBy"
 
 function Dashboard(props) {
   const [events, cEvents] = useState([]);
   const [current, cCurrent] = useState(undefined);
-  const [location, cLocation] = useState(undefined)
-  const [name, cName] = useState(undefined)
+  const [location, cLocation] = useState(undefined);
+  const [name, cName] = useState(undefined);
+  const [sort, cSort] = useState("unsorted");
+
+// let sortedEvents = sortBy(events, function(obj) {return new Date(obj.date);});
+console.log(sort)
 
   const refreshList = () => {
     props.client.getEvents().then((response) => cEvents(response.data));
@@ -40,6 +45,8 @@ function Dashboard(props) {
   }, []);
 
   const buildrows = () => {
+    if (events.length > 0) {
+      if (sort === "unsorted") {
     return events.map((current) => {
       return (
         <tr key={current._id}>
@@ -53,7 +60,44 @@ function Dashboard(props) {
           </td>
         </tr>
       );
-    });
+    })} else if (sort === "ascending"){
+      const sortedEvents = sortBy(events, function(obj) {return new Date(obj.date);});
+      return sortedEvents.map((current) => {
+        return (
+          <tr key={current._id}>
+            <td>{current.name}</td>
+            <td>{current.location}</td>
+            <td>{current.information}</td>
+            <td>{current.date}</td>
+            <td>
+              <button className ="button-28" onClick={() => removeEvent(current._id)}> Remove</button>{' '}
+              <button className ="button-27" onClick={() => updateEvent(current)}> Update</button>
+            </td>
+          </tr>
+        )
+      })} else {
+      const sortedEvents = sortBy(events, function(obj) {return new Date(obj.date)});
+      return sortedEvents.reverse().map((current) => {
+        return (
+          <tr key={current._id}>
+            <td>{current.name}</td>
+            <td>{current.location}</td>
+            <td>{current.information}</td>
+            <td>{current.date}</td>
+            <td>
+              <button className ="button-28" onClick={() => removeEvent(current._id)}> Remove</button>{' '}
+              <button className ="button-27" onClick={() => updateEvent(current)}> Update</button>
+            </td>
+          </tr>
+        );
+      })
+    }} else {
+      return (
+      <tr className = "no-events-to-show">
+        <td colSpan="5">{"No events to show"}</td>
+      </tr>)
+    }
+    ;
   };
   
   return (
@@ -73,15 +117,26 @@ function Dashboard(props) {
               getByLocation={(loc) => getByLocation(loc)}
               getByName={(nam) => getByName(nam)}
             />
+      
           </Row>
           <br />
             <Row>
-              <Col md = {7}>
+              <Col md = {8}>
               <Card className = 'event-card'>
                 <Card.Header className = 'small-card-header' >Events</Card.Header>
                 <Card.Body>
+                
+                <div className = 'dropdown-container'>
+                  <div className = "dropdown-name">Sort by date:</div>
+                  <select className = "dropdown-list" onChange={(e) => cSort(e.target.value)} value={sort}>
+                    <option value={"ascending"}>Oldest to Newest</option>
+                    <option value={"descending"}>Newest to Oldest</option>
+                    <option value={"unsorted"}>Unsorted</option>
+                  </select>
+                </div>
+        
                   <Table responsive className = 'event-table'>
-                  <thead  >
+                  <thead>
                     <tr>
                       <th>Name</th>
                       <th>Location</th>

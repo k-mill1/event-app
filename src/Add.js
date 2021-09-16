@@ -8,7 +8,6 @@ import './App.css';
 function Add(props) {
   const [disabled, cDisabled] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
-  console.log(props.currentEvent)
   const [formDate, setFormDate] = useState(props.currentEvent?.date ? new Date(props.currentEvent.date) : new Date())
 
   const submitHandler = (e) => {
@@ -46,88 +45,88 @@ function Add(props) {
       });
   };
 
-  // 
-  const handleDateChange = (e) => {
-    if(props.currentEvent){
-      setFormDate(e)
-    }
-    else{
-      setStartDate(e)
-    }
-  }
-
-  // when we select an event to update
+  // when you select an event to update, update formDate
   useEffect(() => {
     setFormDate(props.currentEvent?.date ? new Date(props.currentEvent.date) : new Date())
   }, [props.currentEvent])
 
- 
+  // cancel event update
+ const cancelUpdate = () => {
+  props.cCurrentEvent(undefined)
+  document.getElementById("addForm").reset()
+ }
+
+ // show cancel button
+ const showCancelButton = () => {
+   return (
+      <button className ="button-28" type="button" onClick={() => cancelUpdate()}>
+        {" "}
+        Cancel{" "}
+      </button>)
+ }
+
   return (
     <>
     <Card className = "add-card">
       <Card.Header className = 'small-card-header'>{props.currentEvent ? "Update event" : "Add event"}</Card.Header>
-     <Card.Body>
-      <form onSubmit={(e) => submitHandler(e)} id="addForm">
-        Name:
-        <input
-          className = "add-field"
-          type="text"
-          defaultValue={props.currentEvent?.name}
-          name="eventName"
-          disabled={disabled}
-          autoComplete="off"
-        />
-        <br />
-        Location:
-        <br />
-        <input
-          className = "add-field"
-          type="text"
-          defaultValue={props.currentEvent?.location}
-          name="location"
-          disabled={disabled}
-          autoComplete="off"
-        />
-        <br />
-        Description:
-        <br />
-        <input
-          className = "add-field"
-          type="text"
-          defaultValue={props.currentEvent?.information}
-          name="information"
-          disabled={disabled}
-          autoComplete="off"
-        />
-        <br />
-        Date/Time:
-        <br />
-        <DatePicker
-            className = "add-field"
-            selected={props.currentEvent ? formDate : startDate}
-            onChange={(e) => handleDateChange(e)}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={30}
-            timeCaption="time"
-            dateFormat="MMMM d yyyy h:mm aa"
-            disabled={disabled}
-            name = "date"
-        />
-        <br />
-        
-        <button className ="button-26" type="submit" disabled={disabled}>
-          {" "}
-          Submit{" "}
-        </button>
+      <Card.Body>
+        <form onSubmit={(e) => submitHandler(e)} id="addForm">
+          Name:
+          <input
+              className = "add-field"
+              type="text"
+              defaultValue={props.currentEvent?.name}
+              name="eventName"
+              disabled={disabled}
+              autoComplete="off"
+          />
+          <br />
+          Location:
+          <br />
+          <input
+              className = "add-field"
+              type="text"
+              defaultValue={props.currentEvent?.location}
+              name="location"
+              disabled={disabled}
+              autoComplete="off"
+          />
+          <br />
+          Description:
+          <br />
+          <input
+              className = "add-field"
+              type="text"
+              defaultValue={props.currentEvent?.information}
+              name="information"
+              disabled={disabled}
+              autoComplete="off"
+          />
+          <br />
+          Date/Time:
+          <br />
+          <DatePicker
+              className = "add-field"
+              selected={props.currentEvent ? formDate : startDate}
+              onChange={(e) => props.currentEvent ? setFormDate(e) : setStartDate(e)}
+              showTimeSelect
+              timeFormat="HH:mm"
+              timeIntervals={30}
+              timeCaption="time"
+              dateFormat="MMMM d yyyy h:mm aa"
+              disabled={disabled}
+              name = "date"
+          />
+          <br />
+          <button className ="button-26" type="submit" disabled={disabled}>
+              {" "}
+              Submit{" "}
+          </button>
+          {props.currentEvent ? showCancelButton() : null} 
 
-        {/* <button className ="button-28" >
-          {" "}
-          Cancel{" "}
-        </button> */}
-      </form>
+        </form>
       </Card.Body>
-      </Card>
+    </Card>
     </>
   );
 }

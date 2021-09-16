@@ -23,7 +23,7 @@ function Login(props) {
     <>
     <div className="d-flex justify-content-center">
     <Card className = "login-card" style={{maxWidth: '30rem'}}>
-      <Card.Header className="login-header">Sign In</Card.Header>
+      <Card.Header className="login-header large-header">Sign In</Card.Header>
       <Card.Body>
       <form onSubmit={(e) => submitHandler(e)}>
       
